@@ -57,3 +57,6 @@ class TestE2E:
             
         with allure.step("Verify order completion"):
             assert "Thank you for your order!" in cart_page.get_complete_header()
+
+if __name__ == '__main__':
+    pytest.main([__file__])

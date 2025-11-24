@@ -98,3 +98,6 @@ class TestInventory:
             assert inventory_list.is_displayed()
             items = driver.find_elements(By.CSS_SELECTOR, ".inventory_item_name")
             assert len(items) == 6
+
+if __name__ == '__main__':
+    pytest.main([__file__])

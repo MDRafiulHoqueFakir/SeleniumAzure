@@ -87,3 +87,6 @@ class TestCart:
             # Verify buttons exist
             assert driver.find_element(*CartPage.CONTINUE_SHOPPING_BUTTON).is_displayed()
             assert driver.find_element(*CartPage.CHECKOUT_BUTTON).is_displayed()
+
+if __name__ == '__main__':
+    pytest.main([__file__])

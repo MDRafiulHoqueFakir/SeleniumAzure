@@ -106,3 +106,6 @@ class TestLogin:
             
         with allure.step("Verify login success"):
             assert "inventory.html" in driver.current_url
+
+if __name__ == '__main__':
+    pytest.main([__file__])

@@ -119,3 +119,6 @@ class TestCheckout:
             
         with allure.step("Verify error message"):
             assert "Error: Postal Code is required" in cart_page.get_checkout_error()
+
+if __name__ == '__main__':
+    pytest.main([__file__])
