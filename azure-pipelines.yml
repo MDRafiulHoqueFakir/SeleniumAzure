@@ -1,0 +1,52 @@
+# Azure Pipeline YAML file
+# This file defines the CI/CD pipeline steps for Azure DevOps.
+
+# Trigger the pipeline on push to the main branch.
+trigger:
+- main
+
+# Use the latest Ubuntu image for the build agent.
+pool:
+  vmImage: ubuntu-latest
+
+steps:
+# Step 1: Use Python 3.x
+# This task installs the specified version of Python on the agent.
+- task: UsePythonVersion@0
+  inputs:
+    versionSpec: '3.x'
+  displayName: 'Use Python 3.x'
+
+# Step 2: Install dependencies
+# This script upgrades pip and installs the required Python packages from requirements.txt.
+- script: |
+    python -m pip install --upgrade pip
+    pip install -r requirements.txt
+  displayName: 'Install dependencies'
+
+# Step 3: Install Chrome and Driver (if not using webdriver-manager to handle it automatically)
+# Since we are using webdriver-manager, it will handle the driver installation.
+# However, we need to ensure Chrome is installed on the agent (ubuntu-latest usually has it).
+- script: |
+    echo "Using webdriver-manager for driver management"
+  displayName: 'Driver Setup'
+
+# Step 4: Run tests
+# This script runs the tests using pytest and generates Allure results.
+# --alluredir=allure-results specifies the directory for Allure data.
+# We use xvfb-run to run headless on Linux if needed, or just rely on headless mode if configured.
+# Since our conftest defaults to headed but we want headless in CI, we might need to adjust.
+# For now, we assume the environment supports display or we should add --headless option.
+# But let's stick to the simple command first.
+- script: |
+    xvfb-run pytest --alluredir=allure-results --driver-browser=chrome
+  displayName: 'Run tests'
+
+# Step 5: Publish Test Results
+# This task publishes the allure-results as a build artifact.
+- task: PublishBuildArtifacts@1
+  inputs:
+    PathtoPublish: 'allure-results'
+    ArtifactName: 'allure-results'
+    publishLocation: 'Container'
+  displayName: 'Publish Allure Results'
