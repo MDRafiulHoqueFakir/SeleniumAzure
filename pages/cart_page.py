@@ -1,4 +1,5 @@
 from selenium.webdriver.common.by import By
+from selenium.webdriver.support import expected_conditions as EC
 from .base_page import BasePage
 
 class CartPage(BasePage):
@@ -41,6 +42,7 @@ class CartPage(BasePage):
         self.enter_text(self.LAST_NAME_INPUT, last_name)
         self.enter_text(self.POSTAL_CODE_INPUT, zip_code)
         self.click(self.CONTINUE_BUTTON)
+        self.wait.until(EC.url_contains("checkout-step-two.html"))
         self.wait_for_element(self.FINISH_BUTTON)
 
     def finish_checkout(self):

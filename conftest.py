@@ -18,7 +18,22 @@ def driver(request):
     
     if browser == "chrome":
         service = ChromeService(ChromeDriverManager().install())
-        driver = webdriver.Chrome(service=service)
+        options = webdriver.ChromeOptions()
+        # Disable password saving and bubbles
+        prefs = {
+            "credentials_enable_service": False,
+            "profile.password_manager_enabled": False,
+            "profile.default_content_setting_values.notifications": 2
+        }
+        options.add_experimental_option("prefs", prefs)
+        options.add_argument("--disable-save-password-bubble")
+        options.add_argument("--disable-infobars")
+        options.add_argument("--disable-notifications")
+        options.add_argument("--disable-popup-blocking")
+        options.add_experimental_option("excludeSwitches", ["enable-automation"])
+        options.add_experimental_option('useAutomationExtension', False)
+        
+        driver = webdriver.Chrome(service=service, options=options)
     elif browser == "firefox":
         service = FirefoxService(GeckoDriverManager().install())
         driver = webdriver.Firefox(service=service)

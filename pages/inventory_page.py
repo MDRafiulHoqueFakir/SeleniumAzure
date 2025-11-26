@@ -45,8 +45,11 @@ class InventoryPage(BasePage):
     def open_menu(self):
         """Open the side menu."""
         self.click(self.MENU_BUTTON)
-        # Wait for menu to be visible (animation)
-        self.wait_for_element(self.LOGOUT_LINK)
+        # Wait for menu to be visible (animation) and interactive
+        # Using a locator that represents the open menu container is better, but waiting for a link to be clickable is good too.
+        from selenium.webdriver.support import expected_conditions as EC
+        self.wait.until(EC.visibility_of_element_located(self.LOGOUT_LINK))
+        self.wait.until(EC.element_to_be_clickable(self.LOGOUT_LINK))
 
     def logout(self):
         """Perform the logout action via the side menu."""

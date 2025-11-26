@@ -11,7 +11,9 @@ class BasePage:
 
     def __init__(self, driver: WebDriver):
         """Initialize the BasePage with a Selenium WebDriver instance."""
-        self.driver = driver
+        # Wrap the driver with SelfHealingDriver
+        from utils.self_healing_driver import SelfHealingDriver
+        self.driver = SelfHealingDriver(driver)
         self.wait = WebDriverWait(driver, 15)
 
     def navigate(self, url: str):
